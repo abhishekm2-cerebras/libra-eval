@@ -58,10 +58,12 @@ def eval():
         raise ValueError("Client not support.")
 
     # LLM-evaluator
-    llm_eval_client = OpenAI_Client(
-        model="gpt-4o-2024-08-06",
+    llm_eval_client = Local_Client(
+        model="qwen3-8b",
         api_config=api_config,
-        for_eval=True,
+        max_requests_per_minute=20,
+        request_window=240,
+        # for_eval=True,
     )
 
     if args.tasks == "all":

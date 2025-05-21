@@ -19,6 +19,6 @@ class Local_Client(OpenAI_Client):
 
         self.client = openai.OpenAI(
             base_url="http://0.0.0.0:8000/v1",
-            api_key="token-abc123",
+            api_key="testabc",
         )
         self.name_mapping = name_mapping

@@ -268,6 +268,16 @@ class BaseClient:
         responses = loop.run_until_complete(run_tasks())
         return responses
 
+    def multi_call_sequential(self, messages_list, **kwargs):
+        """Makes sequential calls to the LLM for a list of messages."""
+        responses = []
+        for messages in messages_list:
+            # Handle system messages by removing them from the messages list
+            msg = messages[1:] if messages[0]["role"] == "system" else messages
+            response = self.call([msg], **kwargs)
+            responses.append(response)
+        return responses
+
     def _expire_old_traffic(self):
         """Expires traffic older than the request window."""
         current_time = time.time()
