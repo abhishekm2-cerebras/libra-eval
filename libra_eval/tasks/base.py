@@ -93,7 +93,7 @@ class Task(ABC):
         eval_msg_fpath = os.path.join(self.tmp_dir, "sample_eval_msg_" + self.task_name + "_" + model_name + ".jsonl")
         result_fpath = os.path.join(self.results_dir, self.task_name + "_" + model_name + ".json")
 
-        if not rewrite_cache and os.path.exists(result_fpath) and mode == 'full':
+        if not rewrite_cache and os.path.exists(result_fpath) and mode in ['evaluation', 'full']:
             with open(result_fpath, "r") as f:
                 result = json.load(f)
                 return result["score"]

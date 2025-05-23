@@ -59,7 +59,7 @@ def eval():
 
     # LLM-evaluator
     llm_eval_client = Local_Client(
-        model="qwen3-8b",
+        model="judgemodel",
         api_config=api_config,
         max_requests_per_minute=20,
         request_window=240,
@@ -88,7 +88,7 @@ def eval():
     )
 
     logger.info(f"In total {len(model_list)} models and {len(task_list)} tasks to evaluate.")
-
+    
     for model in model_list:
         for task in task_list:
             try:
@@ -96,6 +96,8 @@ def eval():
                 logger.info(f"Task: {task}, Model: {model}, evaluation started.")
                 llm_client = client_class(model=model,api_config=api_config)
                 task_instance = TASKS[task](debug=args.debug, output_dir=args.output_dir, n_samples_per_task=args.n_samples_per_task)
+                if task_instance.librai_evaluator_name != "":
+                    continue
                 score = task_instance.run_pipeline(llm_client=llm_client, llm_eval_client=llm_eval_client, 
                                                 librai_client=librai_client, rewrite_cache=args.rewrite_cache,
                                                 mode=args.mode, generation_params=generation_params)
